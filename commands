@@ -1,4 +1,5 @@
 LiNUX
+to add user not as root :- user/bin/useradd/user/bin/passwd
 ques.Create the following users,groups and group membership
 -A group named sysadm
 -A user "harry" who belongs to sysadm as a secondary group.
@@ -43,7 +44,6 @@ bash
 yum install git 
 CREATE A PUBLIC REPO AND CLONE
  1  yum install git
-    2  history
     3  git clone git@github.com:sanjayguruji/web-repo.git
     4  git clone https://github.com/sanjayguruji/web-repo.git
     5  ssh-keygen
@@ -158,5 +158,57 @@ jenkins_on_aws
 
 :: You can check the status of the Jenkins service using the command
 --- systemctl status jenkins
+#############################################################################################
+GIT CLIENT1 , CLIENT2 , SERVER
+first create 3 instances
+sudo su -
+sethostname
+ hostname
+ ip a s
+ vim /etc/hosts
+ cat /etc/hosts
+  history
+create a directory and do git init --bare in server and in client do git --init
+in the server
+cd 
+make the changes in vim /etc/ssh/sshd_config
+git server, client1 , client2
+#########
+git-server
+##########
+sudo su -
+passwd root
+yum install git
+hostnamectl set-hostname git-server.example.com
+bash
+vim /etc/hosts
+ping
+vim /etc/ssh/sshd_config    (remove # for "permit root login" and change value to yes and  PasswordAuthentication ,PermitEmptyPasswords to yes)
+systemctl restart sshd
+systemctl start sshd
+cd project
+git init --bare
+git log
+
+###########
+git-client1
+###########
+sudo su -
+hostnamectl set-hostname git-client.example.com
+bash
+yum install git
+ssh-keygen
+ssh-copy-id root@172.31.35.8
+vim /etc/hosts
+ping
+mkdir my-project
+cd my-project
+git init
+vim index.html
+git add .
+git commit -m "first"
+git remote add origin root@172.31.35.8:/root/project/
+git push -u origin master
+
 
 

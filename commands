@@ -100,5 +100,63 @@ login manager app username and pass admin
 then the configuration part and create credentials with username depolyer and pass depolyer
 add container
 make changes from github and check wheather the changes are reflecting or not
+####################################################################################################
+Docker_installation & Containers
+:: yum install docker*
+
+:: docker pull jenkins/jenkins
+
+:: docker ps
+
+:: systemctl start docker
+
+:: systemctl enable docker
+
+:: docker info
+
+:: docker ps
+
+:: Creating a container for jenkins
+-- docker run -itd --name <Name_of_container> -p 8080:8080 jenkins/jenkins
+
+:: docker ps -a
+
+:: docker exec -it <container_id> /bin/bash
+
+:: after we logged into 
+-- <public ip-address>:8080
+-- copy the directoryy
+
+:: cat <paste_directory>
+
+:: copy the password and paste it in browser login page
+###################################################################################################
+jenkins_on_aws
+:: up to date on your instance by using
+--- yum update –y
+
+:: Add the Jenkins repo using the following command
+--- wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+:: Import a key file from Jenkins-CI to enable installation from the package
+--- rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+--- yum upgrade
+
+:: Install Java
+--- yum install java-17-amazon-corretto -y
+
+:: Install Jenkins
+--- yum install jenkins -y
+
+:: Enable the Jenkins service to start at boot
+--- systemctl enable jenkins
+
+:: Start Jenkins as a service
+--- systemctl start jenkins
+
+
+:: You can check the status of the Jenkins service using the command
+--- systemctl status jenkins
 
 

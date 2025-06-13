@@ -209,6 +209,189 @@ git add .
 git commit -m "first"
 git remote add origin root@172.31.35.8:/root/project/
 git push -u origin master
+########################################################################################################################
+AWS
+1st scenario) USING HTTPD
+create a instance-> web server -> t2.micro -> connect
+    sudo su -
+    2  yum install httpd -y
+    3  cd /var/www/html/
+    4  echo "this is my web server" > index.html
+    5  ll
+    7  cat index.html
+    9  systemctl start httpd
+   10  systemctl enable httpd
+   11  systemctl status httpd
+enable the port no 8080 and paste the public ip address in the browser for the output.
+#########################################################################################################################
+2nd) using the advance option 
+create a instace -> my-server -> t2.micro -> in the advance give the follwing script
+#!/bin/bash
+yum install httpd -y
+echo "this message is created during the instace creation from the advance option" >> /var/www/html/index.html
+system start httpd
+system enable httpd
+useradd mansi -p redhat -c "user mansi created" 
+copy the public ip and paste in the browser the message will the displayed 
+then check in the terminal the file index.html is reflected or not
+    sudo su -
+ 1  cd /var/www/html
+    2  ll
+    3  cat index.html
+    4  cd
+    5  tail /etc/passwd
+    6  tail /etc/shadow
+====================================================================================================================
+3) creating custom AMI
+create two instances in one instace download all the packages 
+then crete another instance using the custom AMI and check wheather all the packages are available in the new instance or not
+ 8  yum install docker *
+   10  yum install vsftpd -y
+   11  yum install dns*
+   12  yum install nfs-utils -y
+   13  yum install cifs-utils -y
+   16  touch mansi.html
+   17  vim mansi.html
+Creting the custom ami -> Actions-> Image and AMI -> Create Image
+name :- devops-practise-ami
+des:
+tag tag image and snapshot together -> create image
+click in the AMi ctalog -> check in my AMI's
+terminate the my-server instance
+create new instance with the custom ami and check the packages install using
+rpmquery docker , httpd, dns , cifs-utils , nfs-utils
+ 1  ll
+    2  rpmquery docker
+    3  rpmquery httpd
+    4  rpmquery dns
+    5  rpmquery cifs-utils
+    7  rpmquery nfs-utils
+    8  history
+=======================================================================================================================
+4) copying ami from one region to another
+AMI -> copy AMI -> Destination = ohio -> copy AMI
+select ohio region
+create a instance in ohio region from the custom ami
+create new key pair
+create security group
+allow port no 22 , http
+launch instance
+paste the public ip in the browser
+terminate
+======================================================================================================================
+5) to share from one account to another
+AMI -> provide AMI-ID of the different account -> save chages
+path :- ec2 -> AMI -> ami-0000------- -> edit AMI permission
+action -> copy ami -> transfer to N.Vir -> copy ami
+==================================================================================================================
+6) how to create AMI from snapshot
+select the existing AMI snapshot-> actions -> create image from the snapshot
+name :
+des:
+create instance 
+deregister 
+===============================================================================================================
+7) Templates
+launch template -> create template
+name : 
+des:
+template tahs 
+name : devops 
+give all the details like image etc 
+add the script file in the advance details 
+creating a instance:- dashboard -> launch instances from template -> paste the ip in terminal
+==============================================================================================================
+STORAGE
+ESD
+1) create instance 
+name: de-server
+check for the root , root name and volume id from the storage 
+connect 
+#sudo su -
+#df -h
+attach the volume: EBS-> volume-> add the "root tag" for the existing volume -> create volume 
+type : gp2
+size : 5
+zone : us-east-1a
+create volume
+select the vol -> actions -> attach volume
+ 1  df -h
+    2  lsblk
+    3  lsblk -fs
+    4  blkid
+       mkfs press tab 2 times
+    5  mkfs.ext4 /dev/xvdb
+    6  blkid
+    7  mkdir data
+    8  mount /dev/xvdb data
+    9  df -h
+   10  cd data
+   11  touch mansi.xt{1..10}
+   12  ll
+restart instance -> connect again
+sudo su -
+cd data 
+ll (data will be goned)
+for permanent mounting 
+blkid -> copy the UID 
+vim /etc/fstab
+add the following connect 
+#mydisk
+UUId = copied id /data ext4 defaults 0 0
+#systemctl daemon-reload
+df -h 
+restart the instance
+connect again
+sudo su -
+df -h
+cd data
+ll
+=====================================================================================================
+2) data replication
+create instance - test-server 
+create a snapshot for the data-vol
+source :- volume
+name :- data-vol 
+des : this is a data-vol snap -> create snapshot 
+actions -> create volume from the snap , 5g , us-east-1a
+attach the volume
+connect to the test-server
+sudo su -
+lsblk
+mkir test
+mount /dev/xvbd test (if does not work use : mkfs.ext4 /dev/sdb)
+df -h
+cd test
+blkid
+df -h
+========================================================================================
+how to increase the disk space
+select the new-data-vol and size = 8
+df -f
+blkid
+lsblk
+===========================================================================================
+how to resize
+resize2fs /dev/xvdb
+df -h
+cd /test
+================================================================================
+how to resize the root volume
+from dashboard increase the size of the data-vol to 15g
+lsblk
+growpart /dev/xvda
+growpart /dev/xvda 1
+xfs_growfs -d 
+df -h
+reboot the test server
+=========================================================================================
+
+
+
+
+
+
+
 
 
 

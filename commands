@@ -244,7 +244,7 @@ then check in the terminal the file index.html is reflected or not
 ====================================================================================================================
 3) creating custom AMI
 create two instances in one instace download all the packages 
-then crete another instance using the custom AMI and check wheather all the packages are available in the new instance or not
+then create another instance using the custom AMI and check wheather all the packages are available in the new instance or not
  8  yum install docker *
    10  yum install vsftpd -y
    11  yum install dns*
@@ -304,7 +304,7 @@ creating a instance:- dashboard -> launch instances from template -> paste the i
 STORAGE
 ESD
 1) create instance 
-name: de-server
+name: dev-server
 check for the root , root name and volume id from the storage 
 connect 
 #sudo su -

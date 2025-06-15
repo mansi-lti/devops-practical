@@ -1,5 +1,5 @@
 LiNUX
-to add user not as root :- user/bin/useradd/user/bin/passwd
+to add user not as root :- user/bin/useradd/user/bin/passwd paste this in vim /etc/sudoers 
 ques.Create the following users,groups and group membership
 -A group named sysadm
 -A user "harry" who belongs to sysadm as a secondary group.
@@ -226,12 +226,12 @@ enable the port no 8080 and paste the public ip address in the browser for the o
 #########################################################################################################################
 2nd) using the advance option 
 create a instace -> my-server -> t2.micro -> in the advance give the follwing script
-#!/bin/bash
-yum install httpd -y
-echo "this message is created during the instace creation from the advance option" >> /var/www/html/index.html
-system start httpd
-system enable httpd
-useradd mansi -p redhat -c "user mansi created" 
+       #!/bin/bash
+       yum install httpd -y
+       echo "this message is created during the instace creation from the advance option" >> /var/www/html/index.html
+       system start httpd
+       system enable httpd
+       useradd mansi -p redhat -c "user mansi created" 
 copy the public ip and paste in the browser the message will the displayed 
 then check in the terminal the file index.html is reflected or not
     sudo su -
@@ -255,7 +255,7 @@ then create another instance using the custom AMI and check wheather all the pac
 Creting the custom ami -> Actions-> Image and AMI -> Create Image
 name :- devops-practise-ami
 des:
-tag tag image and snapshot together -> create image
+tag:- tag image and snapshot together -> create image
 click in the AMi ctalog -> check in my AMI's
 terminate the my-server instance
 create new instance with the custom ami and check the packages install using
@@ -385,6 +385,63 @@ xfs_growfs -d
 df -h
 reboot the test server
 =========================================================================================
+VPC
+create a vpc :-devops-vpc
+name : devops-vpc 
+vpc only 
+ipvr cidr : 10.0.0.0/16
+create a internet gateway name : devops-igw
+create public-subet select devops-vpc
+name : public-subnet
+zone : us-east-1a
+vpc cidr : 10.0.0.0/16
+subnet cidr : 10.0.0.0/24
+create private-subnet
+name : private-subnet
+zone : 1b
+vpc cidr : 10.0.0.0/16
+subnet cidr : 10.0.1.0/25
+attach the vpc to internet gateway path: internet gateway < select devops igw < actions < attach to vpc
+create a public-rt
+edit routes < add intenet gatway
+associate public-subnet with public-rt from edit subnet associations
+create private-rt and associate with private-subnet
+create a public-server instance 
+vpc : devops-vpc
+subnet : public-subnet
+auto-assign public ip : enable
+sg : create -> public sg -> enable the port http and all icmp ipv4
+connect
+#yum install httpd -y
+#cd /var/www/html
+#echo "this is aws server" > index.html
+#ll
+#systemctl restart httpd
+#systemctl enable httpd
+#systemctl status httpd
+copy the public ip and paste it in browser
+create private-server instance
+name : private-server
+vpc : devops-vpc
+subent: private-subnet
+auto-asign public ip : disable
+sg : select existing -> public-sg
+#vim lti-mahape-key.pem
+paste the private key content
+#chmod 400 lti-mahape-key.pem
+connect the private-server
+#ping google.com (it will not work)
+create NAT gateway 
+name : devops-ngw
+subnet : public-subnet
+elastic ip : allocate 
+edit private-rt and add NAT-gateway -> save changes
+#ping google.com (it should work)
+
+
+
+
+
 
 
 

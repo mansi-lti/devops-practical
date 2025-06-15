@@ -385,6 +385,150 @@ xfs_growfs -d
 df -h
 reboot the test server
 =========================================================================================
+EBS 
+Volumes for different regions
+create a instance - dev-server
+assign tag to the root volume
+create a new volume
+size : 5g
+region : us-east-1a
+tag: data-vol
+attach volume -> device : /dev/sdb
+connect instance
+    #sudo su -
+    lsblk
+    2  mkfs.ext4 /dev/sdb
+    3  mkdir data
+    4  mount /dev/xvdb data
+    5  df -h
+    6  cd data
+    7  touch devops.txt{1..10}
+    8  ll
+    9  history
+create a duplicte session
+select ohio region and create a new instance(test-server)
+create a snapshot for the data-vol in (N.virgina) -> copy the snapshot -> destination = us-east-2
+check in ohio region under snapshot 
+select the snapshot -> create volume from snapshot -> name : new-data-vol -> attach 
+connect ohio 
+ 1  lsblk
+    2  mkdir data1
+    3  mount /dev/xvdb data1
+    4  df -h
+    5  cd /root/data1
+    6  ll
+    7  cd
+    8  umount data1
+    9  ll
+=========================================================================================
+EFS
+create 3 instances
+server1 - amazon linux , 1a 
+server2 - redhat , 1a
+server3 - ubuntu , 1b
+connect 3 servers
+create efs -> create file system 
+name : my-efs
+vpc : default
+connect the 3 servers and install nfs-utils on 3 servers 
+linux and redhat
+sudo su -
+yum install nfs-utils -y
+ubuntu 
+sudo su -
+apt-get update 
+apt install nfs-common
+server-1 and server 2
+#systemctl restart nfs-server.service
+#systemctl enable nfs-server.service
+server-3
+#systemctl status nfs-common.service
+allow nfs port on 3 servers (2049)
+create a new security group 
+name : efs1-sg 
+in inbound ruls allow nfs port 
+change the security group fof 1a , 1b regions
+path : efs < file system < my-efs< network < change from default to efs1-sg
+my-efs < manage < attach < mount via ip < copy the command for mounting 
+server 1
+#mkdir efs 
+#paste the code
+#df -h
+#cd /root/efs
+#touch devops.txt{1..10}
+server 2
+#mkdir remote 
+pate the code-----------/remote
+df -h
+cd /root/remote
+ll
+servr 3
+#mkdir devops
+#paste the code----------/devops
+#cd /root/devops 
+#ll
+#touch mansi.txt{1..5}
+check in 3 servers wheathe reflected or not
+create a new instance in 1c subnet
+connect
+#sudo su -
+#mkdir mansi
+#pastse the mount code..../mansi
+#df -h
+#cd /root/mansi
+#ll
+=================================================================================================================
+S3
+website hosting
+crate a bucket "website- hosting"
+upload all the website files
+go to properties < enable static website hosting
+select all the files from the bucket and  change permission
+actions < make public
+copy the url and paste
+===============================================================================================================
+IAM USER
+create a user
+name: mansi-admin
+policies : attach policies directly
+permissions : search amazons3fullaccess -> create user
+select user -> security credentials -> create access key -> download
+create a instance -> dev-server , size : 10 -> connect
+#sudo su -
+#yum update -y
+#curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+#aws --version
+#aws configure
+access key : 
+secert : 
+region : us-east-1
+format : table
+#ll
+#cd .aws/
+#ls
+#cat config
+#cat credentials
+#sudo yum install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel
+#git clone https://github.com/s3fs-fuse/s3fs-fuse.git
+#ll
+#cd s3fs-fuse
+#./autogen.sh
+#./configure --prefix=/usr --with-openssl
+#sudo make install
+#make
+#which s3fs
+#touch /etc/passwd-s3fs
+#vim /etc/passwd-s3fs
+#sudo chmod 640 /etc/passwd-s3fs
+#cd
+# s3fs sanjaynn /mnt -o passwd_file=/etc/passwd-s3fs replace (sanjaynn with uh r bucket name)
+# df -h
+#touch mansi.txt{1..5}
+#ll
+website files are displayed in the terminal and also in the bucket 
+===========================================================================================
 VPC
 create a vpc :-devops-vpc
 name : devops-vpc 

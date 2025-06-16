@@ -581,6 +581,77 @@ subnet : public-subnet
 elastic ip : allocate 
 edit private-rt and add NAT-gateway -> save changes
 #ping google.com (it should work)
+====================================================================================================================
+******Using 2 vpc sending data from one region to another*******
+N.Virgina
+Create vpc :- dev-vpc , 10.0.0.0/16
+Igw :- dev-igw , attach igw to vpc
+subnet :- public-subnet , 1a , 10.0.0.0/16 , 10.0.0.0/24
+          private-subnet , 1b , 10.0.0.0/16, 10.0.1.0/24
+route table :- public-rt , dev-vpc
+edit routes :- 0.0.0-- , igw , save changes
+route table :- private-rt , dev-vpc 
+associate subnets
+create instance :- public-server , lti keuy , dev-vpc , public-subnet , create sg , add http , icmp
+create instance :- private-server , dev-vpc , private-subnet , disabled , existing sg
+connect 
+#sudo su -
+#yum install httpd -y
+#cd /var/www/html
+#echo "this is web server" > index.html
+#ll
+#systemctl restart httpd
+#systemctl enable httpd
+paste public ip of ng instance
+#cd
+copy private-server ip add
+#ping ip_add
+----------ohio-region----------
+create vpc :- AI-project , 20.0.0.0/16
+igw - AI-project-igw , attach to vpc 
+subnet :- web-subnet , 2a , 20.0.0.0/24
+          db-subnet , 2b, 20.0.1.0/24
+route table :- web-rt , AI-project,   
+edit routes :- igw
+associate subnets
+route table :- db-rt 
+instances :- create :- web-server , sg(web-sg)(new) , allow icmp , http
+create : db-server 
+connect
+#sudo su -
+#yum install httpd -y
+#ping ip_add (private ip of db_Server)
+#passwd root 
+#vim /etc/ssh/sshd_config (edit permintrootpassword , passwordauthentication -> yes)
+systemctl restart sshd
+systemctl enable sshd
+do these changes in the both machines
+create files on the both the machines 
+cat > devops.txt provide some content in that (similary do it in N.virgina region)
+create peering connections 
+name : dev-to-ai
+vpc : dev-pc
+another region 
+us-east-2
+vcpid (copy vpc id from the ohio region)
+in ohio accept request -> under peering connections 
+--------ohio-region----------------
+route table :- web-rt 
+edit :- add (10.0.0.0/16)  peering connection
+--------N.V------------
+route table :- private
+edit :- add(20.0.0.0/16) peering connection 
+------ohio terminal----------
+scp devops.txt root@public-ip-(nv-region-termial):/tmp
+------nv terminal----------
+cd /tmp
+ll
+vice-versa (optional)
+=====================================================================================================
+
+
+
+
 
 
 

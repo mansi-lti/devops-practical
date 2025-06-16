@@ -547,7 +547,7 @@ vpc cidr : 10.0.0.0/16
 subnet cidr : 10.0.1.0/25
 attach the vpc to internet gateway path: internet gateway < select devops igw < actions < attach to vpc
 create a public-rt
-edit routes < add intenet gatway
+edit routes < add internet gatway
 associate public-subnet with public-rt from edit subnet associations
 create private-rt and associate with private-subnet
 create a public-server instance 

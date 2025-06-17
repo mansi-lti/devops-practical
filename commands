@@ -15,6 +15,7 @@ passwd harry same for natasha and sarah
 usermod -G sysadm harry
 usermod -G sysadm natasha
 usermod -s /sbin/nologin sarah
+cat /etc/passwd | grep -i sarah
 ####################################################################################################################
 ques.create a collabrative directory /shared/sysadm with th following characteristics:
 -Group owernship of /shared/sysadm is sysadm
@@ -377,11 +378,10 @@ df -h
 cd /test
 ================================================================================
 how to resize the root volume
-from dashboard increase the size of the data-vol to 15g
+from dashboard increase the size of the root-vol to 15g
 lsblk
-growpart /dev/xvda
 growpart /dev/xvda 1
-xfs_growfs -d 
+lsblk 
 df -h
 reboot the test server
 =========================================================================================
@@ -520,11 +520,12 @@ format : table
 #make
 #which s3fs
 #touch /etc/passwd-s3fs
-#vim /etc/passwd-s3fs
+#vim /etc/passwd-s3fs (add acces key: secret)
 #sudo chmod 640 /etc/passwd-s3fs
 #cd
 # s3fs sanjaynn /mnt -o passwd_file=/etc/passwd-s3fs replace (sanjaynn with uh r bucket name)
 # df -h
+#cd /mnt
 #touch mansi.txt{1..5}
 #ll
 website files are displayed in the terminal and also in the bucket 

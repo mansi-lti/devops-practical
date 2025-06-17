@@ -648,6 +648,12 @@ cd /tmp
 ll
 vice-versa (optional)
 =====================================================================================================
+MFA 
+first login to aws account -> security credentials -> mfa device
+give mfa device name -> scane using authentictor app -> provide two codes that comes in authenticator app 
+you can also disable it uh will see a option to remove 
+================================================================================================
+
 
 
 
